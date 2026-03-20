@@ -2,7 +2,7 @@ import sys
 import importlib.util
 import subprocess
 
-
+# verification des dependances dans le venv
 def check_dependencies() -> bool:
         dependencies = ["pandas", "requests", "matplotlib", "numpy"]
         missing = [lib for lib in dependencies if\

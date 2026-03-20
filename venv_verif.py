@@ -3,7 +3,7 @@ import venv
 import subprocess
 import os
 
-
+# verification qu'on est bien dans un venv, sinon creation de celui-ci
 ENV_NAME = "A-Maze-ing_env"
 
 
