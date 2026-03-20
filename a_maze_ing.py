@@ -23,26 +23,37 @@ class MyLaby():
     def __init__(self, config: MyBaseConfig):
         self.width = config.WIDTH
         self.height = config.HEIGHT
-        self.x, self.y = config.ENTRY
         self.entry_x, self.entry_y = config.ENTRY
         self.exit_x, self.exit_y = config.EXIT
         self.grid = [[Cellule() for x in range(self.width)]
                      for y in range(self.height)]
 
     # recherche des voisins disponibles (.visited=False)
-    def neighbor(self, current_x: int, current_y: int) -> list:
+    def neighbor(self, current_x: int, current_y: int, func: Optional[str]
+                 ) -> list:
         neighb = [
             ("north", current_x, current_y-1),
             ("south", current_x, current_y+1),
             ("east", current_x+1, current_y),
             ("west", current_x-1, current_y)
         ]
-        for dir, nx, ny in neighb:
-            if 0 <= nx < self.width and 0 <= ny < self.height:
-                self.grid[ny][nx].current = False
-        return [(dir, nx, ny) for dir, nx, ny in neighb\
-                if 0 <= nx < self.width and 0 <= ny < self.height\
-                and not self.grid[ny][nx].visited]
+        neighbors = []
+        if func == "dfs":
+            for dir, nx, ny in neighb:
+                if 0 <= nx < self.width and 0 <= ny < self.height:
+                    self.grid[ny][nx].current = False
+                    if not self.grid[ny][nx].visited:
+                        neighbors.append([dir, nx, ny])
+        elif func == "resolve_lab":
+            for dir, nx, ny in neighb:
+                if 0 <= nx < self.width and 0 <= ny < self.height:
+                    walls = [direction for direction, status in
+                             self.grid[ny][nx].__dict__.items() if not status]
+                    neighbors.append([dir, nx, ny])
+        return neighbors
+        # return [(dir, nx, ny) for dir, nx, ny in neighb\
+                # if 0 <= nx < self.width and 0 <= ny < self.height\
+                # and not self.grid[ny][nx].visited]
 
     # ouverture des murs concordants current_case = voisin
     def open_wall(self, x: int, y: int, direction: str, nx: int,
@@ -111,7 +122,7 @@ class MyLaby():
         self.grid[current_y][current_x].visited = True
         self.grid[current_y][current_x].current = True
         # recherche des voisins dispo
-        free_neighbors = self.neighbor(current_x, current_y)
+        free_neighbors = self.neighbor(current_x, current_y, "dfs")
         random.shuffle(free_neighbors)
         self.clear_screen()
         self.display()
@@ -123,9 +134,15 @@ class MyLaby():
                     self.open_wall(current_x, current_y, direction, nx, ny)
                     self.dfs(nx, ny)
 
-    def resolve_lab(self):
-        self.entry_x, self.entry_y
-        self.exit_x, self.exit_y
+    def resolve_lab(self, current_x: Optional[int] = None,
+                    current_y: Optional[int] = None) -> None:
+        if current_x is None or current_y is None:
+            current_x, current_y = self.entry_x, self.entry_y
+        stop_x, stop_y = self.exit_x, self.exit_y
+        self.grid[ey][ex]
+        possible_neighbors = self.neighbor(current_x, current_y, 
+                                           "resolved_lab")
+
 
     # affichage
     def display(self, new_grid: Optional[list] = None) -> None:
