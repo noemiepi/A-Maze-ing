@@ -7,6 +7,7 @@ import os
 import time
 from collections import deque
 
+
 # definition de chaque cellule du labyrinthe
 class Cellule():
     def __init__(self):
@@ -17,6 +18,7 @@ class Cellule():
         self.visited = False
         self.ft = False
         self.current = False
+        self.resolved = False
 
 
 class MyLaby():
@@ -51,16 +53,16 @@ class MyLaby():
             for dir, nx, ny in neighb:
                 if 0 <= nx < self.width and 0 <= ny < self.height:
                     if dir == "north" and\
-                        not self.grid[current_x][current_y].north:
+                        not self.grid[current_y][current_x].north:
                         neighbors.append([dir, nx, ny])
-                    if dir == "south" and\
-                        not self.grid[current_x][current_y].south:
+                    elif dir == "south" and\
+                        not self.grid[current_y][current_x].south:
                         neighbors.append([dir, nx, ny])
-                    if dir == "east" and\
-                        not self.grid[current_x][current_y].east:
+                    elif dir == "east" and\
+                        not self.grid[current_y][current_x].east:
                         neighbors.append([dir, nx, ny])
-                    if dir == "west" and\
-                        not self.grid[current_x][current_y].west:
+                    elif dir == "west" and\
+                        not self.grid[current_y][current_x].west:
                         neighbors.append([dir, nx, ny])
         return neighbors
         # return [(dir, nx, ny) for dir, nx, ny in neighb\
@@ -116,7 +118,7 @@ class MyLaby():
 # *****************************************************************************
 # *****************************************************************************
     # fichier de sortie du labyrinthe en hexadecimale
-    def output_maze(self):
+    def output_maze(self, path: Optional[list] = None):
         with open("output.txt", "w") as f:
             for y in range(self.height):
                 for x in range(self.width):
@@ -129,7 +131,21 @@ class MyLaby():
                     f.write(hex(value)[2::])
                 f.write("\n")
             f.write(f"\n{self.entry_x},{self.entry_y}")
-            f.write(f"\n{self.exit_x},{self.exit_y}")
+            f.write(f"\n{self.exit_x},{self.exit_y}\n")
+            if path is not None:
+                directions = []
+                cx , cy = self.entry_x, self.entry_y
+                dir = ""
+                for x, y in path:
+                    if x == cx - 1: dir = "W"
+                    if x == cx + 1: dir = "E"
+                    if y == cy - 1: dir = "N"
+                    if y == cy + 1: dir = "S"
+                    cx, cy = x, y
+                    if dir in ["N", "S", "E", "W"]:
+                        directions.append(dir)
+                for d in directions:
+                    f.write(d)
 
 # *****************************************************************************
 # *****************************************************************************
@@ -148,7 +164,7 @@ class MyLaby():
         random.shuffle(free_neighbors)
         self.clear_screen()
         self.display()
-        # time.sleep(0.1)
+        time.sleep(0.1)
         # deplacement vers un voisin dispo
         for direction, nx, ny in free_neighbors:
             if not self.grid[ny][nx].visited:
@@ -161,28 +177,30 @@ class MyLaby():
     def resolve_lab(self) -> None:
         queue = deque()
         queue.append((self.entry_x, self.entry_y))
-        visited = set()
-        visited.add((self.entry_x, self.entry_y))
+        visited = {(self.entry_x, self.entry_y)}
         parent = {}
         while queue:
             x, y = queue.popleft()
             if (x, y) == [self.exit_x, self.exit_y]:
                 break
-            for nx, ny in self.neighbor(x, y, "resolve_lab"):
+            for dir, nx, ny in self.neighbor(x, y, "resolve_lab"):
                 if (nx, ny) not in visited:
-                    queue.append([nx, ny])
-                    visited.add([nx, ny])
+                    queue.append((nx, ny))
+                    visited.add((nx, ny))
                     parent[(nx, ny)] = (x, y)
 
         path = []
         current = (self.exit_x, self.exit_y)
-
         while current != (self.entry_x, self.entry_y):
+            x, y = current
             path.append(current)
             current = parent[current]
+
         path.append((self.entry_x, self.entry_y))
-        for x, y in path.reverse():
-            self.grid[y][x].current = True
+        path.reverse()
+        self.output_maze(path)
+        for x, y in path:
+            self.grid[y][x].resolved = True
             self.clear_screen()
             self.display()
             time.sleep(0.1)
@@ -206,6 +224,9 @@ class MyLaby():
                 # case 42
                 if grid_to_display[y][x].ft: 
                     middle_line += "\033[1;5;36m O \033[0m"
+                # chemin de resolution
+                elif grid_to_display[y][x].resolved:
+                    middle_line += "\033[1;32m W \033[0m"
                 # point de depart
                 elif x == self.entry_x and y == self.entry_y:
                     middle_line += "\033[1;32m E \033[0m"
