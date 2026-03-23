@@ -5,6 +5,7 @@ from config import MyBaseConfig
 from typing import Optional
 import os
 import time
+from collections import deque
 
 # definition de chaque cellule du labyrinthe
 class Cellule():
@@ -28,6 +29,8 @@ class MyLaby():
         self.grid = [[Cellule() for x in range(self.width)]
                      for y in range(self.height)]
 
+# *****************************************************************************
+# *****************************************************************************
     # recherche des voisins disponibles (.visited=False)
     def neighbor(self, current_x: int, current_y: int, func: Optional[str]
                  ) -> list:
@@ -47,14 +50,25 @@ class MyLaby():
         elif func == "resolve_lab":
             for dir, nx, ny in neighb:
                 if 0 <= nx < self.width and 0 <= ny < self.height:
-                    walls = [direction for direction, status in
-                             self.grid[ny][nx].__dict__.items() if not status]
-                    neighbors.append([dir, nx, ny])
+                    if dir == "north" and\
+                        not self.grid[current_x][current_y].north:
+                        neighbors.append([dir, nx, ny])
+                    if dir == "south" and\
+                        not self.grid[current_x][current_y].south:
+                        neighbors.append([dir, nx, ny])
+                    if dir == "east" and\
+                        not self.grid[current_x][current_y].east:
+                        neighbors.append([dir, nx, ny])
+                    if dir == "west" and\
+                        not self.grid[current_x][current_y].west:
+                        neighbors.append([dir, nx, ny])
         return neighbors
         # return [(dir, nx, ny) for dir, nx, ny in neighb\
                 # if 0 <= nx < self.width and 0 <= ny < self.height\
                 # and not self.grid[ny][nx].visited]
 
+# *****************************************************************************
+# *****************************************************************************
     # ouverture des murs concordants current_case = voisin
     def open_wall(self, x: int, y: int, direction: str, nx: int,
                   ny: int) -> None:
@@ -64,10 +78,14 @@ class MyLaby():
             setattr(self.grid[y][x], direction, False)
             setattr(self.grid[ny][nx], opposed[direction], False)
 
+# *****************************************************************************
+# *****************************************************************************
     # nettoyage de l'ecran du terminal
     def clear_screen(self):
         os.system('clear')
 
+# *****************************************************************************
+# *****************************************************************************
     # marquage des cases pour ecrire 42
     def case_ft(self):
         if self.width >= 9 and self.height >= 9:
@@ -95,6 +113,8 @@ class MyLaby():
                         (start_x + nb for nb in [2, 4, 5, 6]):
                         self.grid[target_y][target_x].ft = True
 
+# *****************************************************************************
+# *****************************************************************************
     # fichier de sortie du labyrinthe en hexadecimale
     def output_maze(self):
         with open("output.txt", "w") as f:
@@ -111,6 +131,8 @@ class MyLaby():
             f.write(f"\n{self.entry_x},{self.entry_y}")
             f.write(f"\n{self.exit_x},{self.exit_y}")
 
+# *****************************************************************************
+# *****************************************************************************
     # algorithme de creation du labyrinthe
     def dfs(self, current_x: Optional[int] = None,
             current_y: Optional[int] = None) -> None:
@@ -126,7 +148,7 @@ class MyLaby():
         random.shuffle(free_neighbors)
         self.clear_screen()
         self.display()
-        time.sleep(0.1)
+        # time.sleep(0.1)
         # deplacement vers un voisin dispo
         for direction, nx, ny in free_neighbors:
             if not self.grid[ny][nx].visited:
@@ -134,16 +156,39 @@ class MyLaby():
                     self.open_wall(current_x, current_y, direction, nx, ny)
                     self.dfs(nx, ny)
 
-    def resolve_lab(self, current_x: Optional[int] = None,
-                    current_y: Optional[int] = None) -> None:
-        if current_x is None or current_y is None:
-            current_x, current_y = self.entry_x, self.entry_y
-        stop_x, stop_y = self.exit_x, self.exit_y
-        self.grid[ey][ex]
-        possible_neighbors = self.neighbor(current_x, current_y, 
-                                           "resolved_lab")
+# *****************************************************************************
+# *****************************************************************************
+    def resolve_lab(self) -> None:
+        queue = deque()
+        queue.append((self.entry_x, self.entry_y))
+        visited = set()
+        visited.add((self.entry_x, self.entry_y))
+        parent = {}
+        while queue:
+            x, y = queue.popleft()
+            if (x, y) == [self.exit_x, self.exit_y]:
+                break
+            for nx, ny in self.neighbor(x, y, "resolve_lab"):
+                if (nx, ny) not in visited:
+                    queue.append([nx, ny])
+                    visited.add([nx, ny])
+                    parent[(nx, ny)] = (x, y)
 
+        path = []
+        current = (self.exit_x, self.exit_y)
 
+        while current != (self.entry_x, self.entry_y):
+            path.append(current)
+            current = parent[current]
+        path.append((self.entry_x, self.entry_y))
+        for x, y in path.reverse():
+            self.grid[y][x].current = True
+            self.clear_screen()
+            self.display()
+            time.sleep(0.1)
+
+# *****************************************************************************
+# *****************************************************************************
     # affichage
     def display(self, new_grid: Optional[list] = None) -> None:
         grid_to_display = new_grid if new_grid is not None else self.grid
