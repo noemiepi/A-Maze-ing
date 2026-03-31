@@ -1,20 +1,37 @@
 from typing_extensions import Annotated
-from pydantic import BaseModel, model_validator, Field, ValidationError
+from pydantic import BaseModel, model_validator, field_validator, Field, \
+                     ValidationError
 import re
+from typing import Optional
+
 
 # implementation de la config suivant config.txt
 class MyBaseConfig(BaseModel):
     WIDTH: int
     HEIGHT: int
-    ENTRY: Annotated[ list[int], Field(min_length=2, max_length=2)]
+    ENTRY: Annotated[list[int], Field(min_length=2, max_length=2)]
     EXIT: Annotated[list[int], Field(min_length=2, max_length=2)]
     OUTPUT_FILE: Annotated[str, Field(min_length=7, max_length=25)]
     PERFECT: Annotated[bool, Field(True)]
+    SEED: Annotated[Optional[int], Field(None)]
+
+    @field_validator('OUTPUT_FILE', mode='before')
+    @classmethod
+    def output_file_is_available(cls, value: str) -> str:
+        if value is None or (isinstance(value, str) and not value.strip()):
+            return "output.txt"
+        if isinstance(value, str):
+            value = value.strip()
+            if value and not value.endswith(".txt"):
+                value += ".txt"
+        return value
 
     @model_validator(mode='after')
     def limits_are_allowed(self):
-        if self.WIDTH > 100: self.WIDTH = 100
-        if self.HEIGHT > 100: self.HEIGHT = 100
+        if self.WIDTH > 100:
+            self.WIDTH = 100
+        if self.HEIGHT > 100:
+            self.HEIGHT = 100
 
         ex, ey = self.ENTRY
         ex = max(0, min(int(ex), self.WIDTH - 1))
@@ -27,19 +44,20 @@ class MyBaseConfig(BaseModel):
         self.EXIT = [sx, sy]
 
         if self.ENTRY == self.EXIT:
-            raise ValueError("Entry and Exit must be differents")
+            self.ENTRY = [0, 0]
+            self.EXIT = [(self.WIDTH - 1), (self.HEIGHT - 1)]
 
         return self
 
 
 def config_method() -> MyBaseConfig:
     with open("config.txt", "r") as c:
-        base_config = {"WIDTH": "", "HEIGHT": "","ENTRY": "", "EXIT": "",
+        base_config = {"WIDTH": "", "HEIGHT": "", "ENTRY": "", "EXIT": "",
                        "MAX": "", "PERFECT": ""}
         config = {}
         file = c.read()
         for line in file.split("\n"):
-            if "=" in line:
+            if not line.startswith("#") and "=" in line:
                 key, value = line.split("=")
                 key = key.strip()
                 value = value.strip()
@@ -57,7 +75,3 @@ def config_method() -> MyBaseConfig:
             print(f"ERROR: {e}")
     my_scope = MyBaseConfig(**config)
     return my_scope
-
-
-if __name__ == "__main__":
-    config_method()
