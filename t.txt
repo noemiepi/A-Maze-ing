@@ -1,1 +1,0 @@
-pour faire l'affichage utiliser soit pygame soit arcade

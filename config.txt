@@ -1,6 +1,0 @@
-WIDTH = 15
-HEIGHT = 15
-ENTRY = 5,0
-EXIT = 10,14
-OUTPUT_FILE = output_lab.txt
-PERFECT = True
