@@ -1,0 +1,7 @@
+# comments
+WIDTH=15
+HEIGHT=15
+ENTRY=5,0
+EXIT=15,15
+OUTPUT_FILE=output_lab.txt
+PERFECT=True
