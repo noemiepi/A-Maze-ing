@@ -1,13 +1,23 @@
 import random
-from typing import Optional
+from src.display import display, clear_screen
 from src.maze_class import MyLaby
+import time
 
 
 class HuntKill(MyLaby):
+
+
     def maze_creator(self) -> None:
+        if self.seed:
+            random.seed(self.seed)
+        i = 1
         current_x, current_y = self.entry_x, self.entry_y
         self.grid[current_y][current_x].visited = True
         while True:
+            self.grid[current_y][current_x].current = True
+            # clear_screen()
+            # display(self)
+            # time.sleep(0.1)
             free_neigbhors = self.neighbor(current_x, current_y, "create")
             if free_neigbhors:
                 random.shuffle(free_neigbhors)
@@ -16,22 +26,21 @@ class HuntKill(MyLaby):
                         self.grid[ny][nx].visited = True
                         self.open_wall(current_x, current_y, direction, nx, ny)
                         current_x, current_y = nx, ny
+                        i += 1
                         break
             else:
                 found = False
-                print("5")
                 for y in range(self.height):
-                    print("6")
                     for x in range(self.width):
-                        print("7")
-                        if not self.grid[y][x].visited:
-                            vn = self.neighbor(current_x, current_y, "hunt")
-                            print(f"8 {vn}")
-                            direction, vx, vy = vn[0]
-                            self.open_wall(x, y, direction, vx, vy)
-                            current_x, current_y = x, y
-                            found = True
-                            break
+                        if not self.grid[y][x].visited and not self.grid[y][x].ft:
+                            vn = self.neighbor(x, y, "hunt")
+                            if vn:
+                                direction, vx, vy = vn[0]
+                                self.open_wall(x, y, direction, vx, vy)
+                                self.grid[y][x].visited = True
+                                current_x, current_y = x, y
+                                found = True
+                                break
                     if found:
                         break
                 if not found:

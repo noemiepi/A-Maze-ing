@@ -27,10 +27,14 @@ class MyBaseConfig(BaseModel):
 
     @model_validator(mode='after')
     def limits_are_allowed(self):
+        error = ""
         if self.WIDTH > 52:
             self.WIDTH = 52
+            error += f"\nWIDTH max = 52, {self.WIDTH} must be transform in 52"
         if self.HEIGHT > 27:
             self.HEIGHT = 27
+            error += (f"\nHEIGHT max = 27, {self.HEIGHT} must be transform"
+                      f"in 27")
 
         ex, ey = self.ENTRY
         ex = max(0, min(int(ex), self.WIDTH - 1))

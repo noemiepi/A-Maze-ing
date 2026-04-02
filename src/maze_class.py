@@ -24,6 +24,7 @@ class MyLaby(ABC):
         self.exit_x, self.exit_y = config.EXIT
         self.output_file = config.OUTPUT_FILE
         self.perfect = config.PERFECT
+        self.seed = config.SEED
         self.grid = [[Cellule() for x in range(self.width)]
                      for y in range(self.height)]
 
@@ -38,17 +39,28 @@ class MyLaby(ABC):
             ("west", current_x-1, current_y)
         ]
         neighbors = []
+        # retourne les voisins non visites
         if func == "create":
             for dir, nx, ny in neighb:
-                if 0 <= nx < self.width and 0 <= ny < self.height:
+                if 0 <= nx < self.width and 0 <= ny < self.height and\
+                    not self.grid[ny][nx].ft:
                     self.grid[ny][nx].current = False
                     if not self.grid[ny][nx].visited:
                         neighbors.append([dir, nx, ny])
+        # retourne les voisins visites
+        elif func == "hunt":
+            for dir, nx, ny in neighb:
+                if 0 <= nx < self.width and 0 <= ny < self.height:
+                    self.grid[ny][nx].current = False
+                    if self.grid[ny][nx].visited:
+                        neighbors.append([dir, nx, ny])
+        # retourne des voisins
         elif func == "imperfect":
             for dir, nx, ny in neighb:
                 if 0 <= nx < self.width and 0 <= ny < self.height:
                     self.grid[ny][nx].current = False
                     neighbors.append([dir, nx, ny])
+        # retourne les voisins non-accessibles
         elif func == "resolve_lab":
             for dir, nx, ny in neighb:
                 if 0 <= nx < self.width and 0 <= ny < self.height:
