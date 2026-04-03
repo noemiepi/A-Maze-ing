@@ -18,10 +18,13 @@ if check_dependencies():
     colour = colour_list.get("normal")
     while True:
         menu = UserMenu()
+        clear_screen()
         if not menu.config:
-            clear_screen()
-            print("\033[1;31m[NOTE] The configuration has be automaticaly "
-                  "upgrade :\033[0m")
+            if not menu.critical_error:
+                print("\033[1;31mconfig.txt not found\033[0m")
+                break
+            # print("\033[1;31m[NOTE] The configuration has be automaticaly "
+            #       "upgrade :\033[0m")
             for warn in menu.critical_error.errors():
                 loc = warn['loc'] if warn['loc'] else "Global Error"
                 print(f"\033[5;35m{loc}\033[0m")

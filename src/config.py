@@ -121,35 +121,38 @@ class MyBaseConfig(BaseModel):
 
 
 def config_method() -> tuple:
-    with open("config.txt", "r") as c:
-        base_config = ["WIDTH", "HEIGHT", "ENTRY", "EXIT", "MAX", "PERFECT",
-                       "OUTPUT_FILE"]
-        config = {}
-        error_conf = {}
-        file = c.read()
-        error = False
-        for line in file.split("\n"):
-            if not line.startswith("#") and "=" in line:
-                key, value = line.split("=", 1)
-                key = key.strip()
-                value = value.strip()
-                if "=" in value:
-                    value = value.rsplit("=", 1)[1]
-                    error = True
-                if key in ["ENTRY", "EXIT"]:
-                    value_lst = []
-                    values = re.split(r"[,;.]+", value)
-                    for v in values:
-                        value_lst.append(v)
-                    config[key] = value_lst
-                elif key in base_config or key == "SEED":
-                    config[key] = value
-                else:
-                    error_conf[key] = value
-        try:
-            all(k in base_config for k in config.keys())
-        except KeyError as e:
-            print(f"ERROR: {e}")
+    try:
+        with open("config.txt", "r") as c:
+            base_config = ["WIDTH", "HEIGHT", "ENTRY", "EXIT", "MAX",
+                           "PERFECT", "OUTPUT_FILE"]
+            config = {}
+            error_conf = {}
+            file = c.read()
+            error = False
+            for line in file.split("\n"):
+                if not line.startswith("#") and "=" in line:
+                    key, value = line.split("=", 1)
+                    key = key.strip()
+                    value = value.strip()
+                    if "=" in value:
+                        value = value.rsplit("=", 1)[1]
+                        error = True
+                    if key in ["ENTRY", "EXIT"]:
+                        value_lst = []
+                        values = re.split(r"[,;.]+", value)
+                        for v in values:
+                            value_lst.append(v)
+                        config[key] = value_lst
+                    elif key in base_config or key == "SEED":
+                        config[key] = value
+                    else:
+                        error_conf[key] = value
+            try:
+                all(k in base_config for k in config.keys())
+            except KeyError as e:
+                print(f"ERROR: {e}")
+    except FileNotFoundError:
+        return(None, None)
     try:
         my_scope = MyBaseConfig(**config)
         if error_conf:
