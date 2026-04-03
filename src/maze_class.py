@@ -43,7 +43,7 @@ class MyLaby(ABC):
         if func == "create":
             for dir, nx, ny in neighb:
                 if 0 <= nx < self.width and 0 <= ny < self.height and\
-                    not self.grid[ny][nx].ft:
+                   not self.grid[ny][nx].ft:
                     self.grid[ny][nx].current = False
                     if not self.grid[ny][nx].visited:
                         neighbors.append([dir, nx, ny])

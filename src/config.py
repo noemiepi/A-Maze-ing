@@ -3,7 +3,6 @@ from pydantic import BaseModel, model_validator, field_validator, Field,\
                      ValidationError, PrivateAttr
 import re
 from typing import Optional
-import time
 
 
 # implementation de la config suivant config.txt
@@ -16,7 +15,6 @@ class MyBaseConfig(BaseModel):
     PERFECT: Annotated[bool, Field(True)]
     SEED: Annotated[Optional[int], Field(None)]
     _warning: list[str] = PrivateAttr(default_factory=list)
-
 
     @field_validator('OUTPUT_FILE', mode='before')
     @classmethod
@@ -113,8 +111,8 @@ class MyBaseConfig(BaseModel):
                             x_list.append(target_x)
             if ex in x_list and ey in y_list:
                 self.ENTRY = [0, 0]
-                self._warning.append(f"\033[1;5;31mENTRY\033[0m can't be on 42"
-                                     f"'s cellule, ENTRY is (0,0)")
+                self._warning.append("\033[1;5;31mENTRY\033[0m can't be on 42"
+                                     "'s cellule, ENTRY is (0,0)")
             if sx in x_list and sy in y_list:
                 self.EXIT = [width, height]
                 self._warning.append(f"\033[1;5;31mEXIT\033[0m can't be on 42"
@@ -155,15 +153,15 @@ def config_method() -> tuple:
     try:
         my_scope = MyBaseConfig(**config)
         if error_conf:
-            my_scope._warning.append(f"\033[1;5;31m'config.txt'\033[0m "
-                                     f"contains too many arguments KEY=VALUE")
+            my_scope._warning.append("\033[1;5;31m'config.txt'\033[0m "
+                                     "contains too many arguments KEY=VALUE")
         if config["OUTPUT_FILE"] != my_scope.OUTPUT_FILE:
             my_scope._warning.append(f"\033[1;5;31m{config['OUTPUT_FILE']}"
                                      f"\033[0m has been upgrade in "
                                      f"{my_scope.OUTPUT_FILE}")
         if error:
-            my_scope._warning.append(f"\033[1;5;31m'config.txt'\033[0m "
-                                     f"contains too many '=' characters")
+            my_scope._warning.append("\033[1;5;31m'config.txt'\033[0m "
+                                     "contains too many '=' characters")
         return (my_scope, None)
     except ValidationError as e:
         return (None, e)

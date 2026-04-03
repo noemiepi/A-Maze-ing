@@ -1,7 +1,7 @@
 import random
 from src.maze_class import MyLaby
-from src.display import display, clear_screen
-import time
+# from src.display import display, clear_screen
+# import time
 
 
 class DfsLab(MyLaby):
@@ -23,7 +23,7 @@ class DfsLab(MyLaby):
                 direction, nx, ny = free_neighbors[0]
                 self.grid[ny][nx].visited = True
                 if not self.grid[current_y][current_x].ft and\
-                    not self.grid[ny][nx].ft:
+                   not self.grid[ny][nx].ft:
                     self.open_wall(current_x, current_y, direction, nx, ny)
                     stack.append((nx, ny))
             else:

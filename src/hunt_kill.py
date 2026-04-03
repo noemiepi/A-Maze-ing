@@ -1,11 +1,10 @@
 import random
-from src.display import display, clear_screen
+# from src.display import display, clear_screen
 from src.maze_class import MyLaby
-import time
+# import time
 
 
 class HuntKill(MyLaby):
-
 
     def maze_creator(self) -> None:
         if self.seed:
@@ -32,7 +31,8 @@ class HuntKill(MyLaby):
                 found = False
                 for y in range(self.height):
                     for x in range(self.width):
-                        if not self.grid[y][x].visited and not self.grid[y][x].ft:
+                        if not self.grid[y][x].visited and\
+                           not self.grid[y][x].ft:
                             vn = self.neighbor(x, y, "hunt")
                             if vn:
                                 direction, vx, vy = vn[0]

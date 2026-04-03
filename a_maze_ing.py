@@ -21,7 +21,7 @@ if check_dependencies():
         if not menu.config:
             clear_screen()
             print("\033[1;31m[NOTE] The configuration has be automaticaly "
-                "upgrade :\033[0m")
+                  "upgrade :\033[0m")
             for warn in menu.critical_error.errors():
                 loc = warn['loc'] if warn['loc'] else "Global Error"
                 print(f"\033[5;35m{loc}\033[0m")
@@ -39,7 +39,7 @@ if check_dependencies():
                     clear_screen()
                     display(lab, colour)
                     print("\nInvalid choice! Please select a number between "
-                        "1 and 5")
+                          "1 and 5")
                 if choice == 1:
                     lab = menu.re_generate(colour, algo)
                     i *= 2
