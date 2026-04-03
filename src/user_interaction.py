@@ -6,32 +6,45 @@ from src.dfs import DfsLab
 from src.hunt_kill import HuntKill
 from src.imperfect import imperfect_maze
 
+
 class UserMenu():
     def __init__(self) -> None:
-        self.config = config_method()
+        self.config, self.critical_error = config_method()
 
     def generate_maze(self, colour: list, algo: int) -> MyLaby:
+        algo_str = ""
         # algo dfs utilise
         if algo == 0:
             lab = DfsLab(self.config)
             lab.case_ft()
+            algo_str += "DFS"
 
-        # algo blobby utilise
+        # algo hunt&kill utilise
         elif algo == 1:
             lab = HuntKill(self.config)
             lab.case_ft()
+            algo_str += "Hunt&Kill"
 
+        # labyrinthe imparfait
         lab.maze_creator()
         display(lab, colour)
         if not self.config.PERFECT:
             imperfect_maze(lab)
+            algo_str += " Imperfect"
         clear_screen()
         display(lab, colour)
+        print(algo_str)
 
+        # creation du fichier output
         lab.output_maze()
         return lab
 
     def display_menu(self):
+        if self.config._warning:
+            print("\033[1;31m[NOTE] The configuration has be automaticaly "
+                  "upgrade :\033[0m")
+            for warn in self.config._warning:
+                print(f"{warn}")
         print("\n=== A-Maze-ing Menu ===")
         print("1. Re-generate a new maze")
         print("2. Show/Hide path from entry to exit")
@@ -83,9 +96,9 @@ class UserMenu():
         if algo == 0:
             clear_screen()
             self.generate_maze(colour, algo)
-            print("\nChanged algorithm to dfs")
+            print("\nChanged algorithm to DFS")
         elif algo == 1:
             clear_screen()
             self.generate_maze(colour, algo)
-            print("\nChanged algorithm to hunt and kill")
+            print("\nChanged algorithm to Hunt&Kill")
         return algo

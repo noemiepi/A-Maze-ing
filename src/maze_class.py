@@ -30,7 +30,7 @@ class MyLaby(ABC):
 
 # *****************************************************************************
 # *****************************************************************************
-    # recherche des voisins disponibles (.visited=False)
+    # recherche des voisins disponibles
     def neighbor(self, current_x: int, current_y: int, func: str) -> list:
         neighb = [
             ("north", current_x, current_y-1),

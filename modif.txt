@@ -10,7 +10,8 @@ fred a 9h48:
 		ajout de self.output_file = config.OUTPUT_FILE
 		modif de open("output.txt", "w") en open(self.output_file, "w")
 	dans config.py:
-		ajout de output_file_is_available(cls, value) afin de gerer le nom du fichier de sortie.txt
+		ajout de output_file_is_available(cls, value) afin de gerer le nom du 
+		fichier de sortie.txt
 
 ============================================================================
 25.03
@@ -76,3 +77,12 @@ car faut clairement faire apparaitre/disparaitre le chemin)
 Pour les bonus, j'envisage un mode de jeu.
 pyproject.toml:
 - arcade ajoute (pour nouveau mode)
+
+============================================================================
+03.04
+fred a 15h05
+gestion du parsing et des erreurs dans config.txt, affichage des erreurs sur le
+terminal.
+
+affichage de l'algo utilise + imperfect si PERFECT=False
+creation de .gitignore, a verifier
