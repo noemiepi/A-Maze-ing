@@ -1,4 +1,4 @@
-from src.config import MyBaseConfig
+from maze.config import MyBaseConfig
 from typing import Optional
 from abc import ABC, abstractmethod
 

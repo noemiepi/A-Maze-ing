@@ -1,6 +1,6 @@
 [project]
-name = "a_maze_ing"
-version = "1.0"
+name = "mazegen"
+version = "1.0.0"
 description = "projet a-maze-ing"
 readme = "README.md"
 requires-python = ">=3.10,<4.0"
@@ -8,7 +8,7 @@ dependencies = [
     "pydantic>=2.12.5",
     "mypy>=1.19.1",
     "poetry>=2.3.2",
-    "arcade (>=3.3.3,<4.0.0)",
+    "arcade>=3.3.3,<4.0.0",
 ]
 authors = [
     {name = "npillet"},
@@ -23,5 +23,15 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling >= 1.26"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["maze*"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+maze = ["*.md"]

@@ -1,11 +1,15 @@
 #!/usr/bin/env python3.10
 
-from src.check_dependencies import check_dependencies
+from src.maze.check_dependencies import check_dependencies
 import time
 
 if check_dependencies():
-    from src.display import display, clear_screen
+
+    from src.maze.display import display, clear_screen
+    from src.game_mode import WindowRenderer
     from src.user_interaction import UserMenu
+    from src.maze.resolved_lab import resolve_lab
+    import arcade
     print("It's ready for A-Maze-ing project")
     i = 0
     c = 1
@@ -16,6 +20,9 @@ if check_dependencies():
                    "blue": [94, 95, 33, 91, 92],
                    "red": [91, 96, 93, 97, 92]}
     colour = colour_list.get("normal")
+    lab = None
+    path = None
+
     while True:
         menu = UserMenu()
         clear_screen()
@@ -23,8 +30,6 @@ if check_dependencies():
             if not menu.critical_error:
                 print("\033[1;31mconfig.txt not found\033[0m")
                 break
-            # print("\033[1;31m[NOTE] The configuration has be automaticaly "
-            #       "upgrade :\033[0m")
             for warn in menu.critical_error.errors():
                 loc = warn['loc'] if warn['loc'] else "Global Error"
                 print(f"\033[5;35m{loc}\033[0m")
@@ -34,20 +39,24 @@ if check_dependencies():
                 menu = UserMenu()
 
         else:
-            lab = menu.generate_maze(colour, algo)
+            if lab is None:
+                lab = menu.generate_maze(colour, algo)
+                path = resolve_lab(lab)
+            lab.output_maze(path)
+            display(lab, colour)
             menu.display_menu()
             try:
-                choice = int(input("Choice? (1-5): "))
-                if not 1 < choice < 6:
+                choice = int(input("Choice? (1-6): "))
+                if not 1 <= choice <= 6:
                     clear_screen()
                     display(lab, colour)
                     print("\nInvalid choice! Please select a number between "
-                          "1 and 5")
+                          "1 and 6")
                 if choice == 1:
                     lab = menu.re_generate(colour, algo)
                     i *= 2
                 elif choice == 2:
-                    i = menu.show_hide(lab, i, colour)
+                    i = menu.show_hide(lab, colour, path)
                 elif choice == 3:
                     colour = menu.colour_change(lab, colour_list, c)
                     c += 1
@@ -56,7 +65,12 @@ if check_dependencies():
                 elif choice == 4:
                     algo = menu.algo_change(algo, colour)
                 elif choice == 5:
-                    print("\nExiting the program...")
+                    WindowRenderer(lab)
+                    arcade.run()
+                    break
+                elif choice == 6:
+                    print("\033[1;94m\nExiting the program...\033[0m")
+                    print("\033[1;92mGoodbye! :D\033[0m")
                     break
             except ValueError:
                 clear_screen()

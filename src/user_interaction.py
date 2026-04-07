@@ -1,17 +1,18 @@
-from src.display import display, clear_screen
-from src.resolved_lab import resolve_lab
-from src.config import config_method
-from src.maze_class import MyLaby
-from src.dfs import DfsLab
-from src.hunt_kill import HuntKill
-from src.imperfect import imperfect_maze
+from src.maze.display import display, clear_screen
+from src.maze.config import config_method
+from src.maze.maze_class import MyLaby
+from src.maze.dfs import DfsLab
+from src.maze.hunt_kill import HuntKill
+from src.maze.imperfect import imperfect_maze
+from typing import Optional
 
 
 class UserMenu():
     def __init__(self) -> None:
         self.config, self.critical_error = config_method()
 
-    def generate_maze(self, colour: list, algo: int) -> MyLaby:
+    def generate_maze(self, colour: Optional[list], algo: Optional[int]
+                      ) -> MyLaby:
         algo_str = ""
         # algo dfs utilise
         if algo == 0:
@@ -33,7 +34,7 @@ class UserMenu():
             algo_str += " Imperfect"
         clear_screen()
         display(lab, colour)
-        print(algo_str)
+        print(f"\033[1;36m{algo_str}\033[0m")
 
         # creation du fichier output
         lab.output_maze()
@@ -50,37 +51,27 @@ class UserMenu():
         print("2. Show/Hide path from entry to exit")
         print("3. Change maze wall colours")
         print("4. Change algorithm")
-        print("5. Quit")
+        print("5. Play mode")
+        print("6. Quit")
 
     def re_generate(self, colour: list, algo: int) -> MyLaby:
         clear_screen()
-        # self.config = config_method()
-        # algo dfs utilise
-        # if algo == 0:
-        #     lab = DfsLab(self.config)
-        #     lab.case_ft()
-
-        # # algo blobby utilise
-        # elif algo == 1:
-        #     lab = HuntKill(self.config)
-        #     lab.case_ft()
         lab = self.generate_maze(colour, algo)
         lab.output_maze()
         return lab
 
-    def show_hide(self, lab: MyLaby, i: int, colour: list) -> int:
+    def show_hide(self, lab: MyLaby, colour: list, path: list) -> None:
         import time
-        # if i % 2 != 0:
-        path = resolve_lab(lab, colour)
+        for x, y in path:
+            lab.grid[y][x].resolved = True
+            clear_screen()
+            display(lab, colour)
+            time.sleep(0.05)
         for x, y in path:
             lab.grid[y][x].resolved = False
             clear_screen()
             display(lab, colour)
             time.sleep(0.05)
-        # else:
-        #     resolve_lab(lab, colour, i)
-        # i += 1
-        # return i
 
     def colour_change(self, lab: MyLaby, colour_list: dict, c: int) -> int:
         colour_choice = ["normal", "darker", "purple", "blue", "red"]

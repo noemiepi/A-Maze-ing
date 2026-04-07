@@ -1,6 +1,6 @@
 import random
-# from src.display import display, clear_screen
-from src.maze_class import MyLaby
+from maze.maze_class import MyLaby
+# from src.maze.display import display, clear_screen
 # import time
 
 

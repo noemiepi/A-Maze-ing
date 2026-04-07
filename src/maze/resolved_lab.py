@@ -1,10 +1,12 @@
-from src.display import display, clear_screen
 from collections import deque
-from src.maze_class import MyLaby
-import time
+from maze.maze_class import MyLaby
+from typing import Optional
 
 
-def resolve_lab(my_lab: MyLaby, colour: list) -> list:
+def resolve_lab(my_lab: MyLaby, colour: Optional[list] = None,
+                i: Optional[int] = None) -> list:
+    if colour is None:
+        colour = [97, 96, 33, 31, 92]
     queue = deque()
     queue.append((my_lab.entry_x, my_lab.entry_y))
     visited = {(my_lab.entry_x, my_lab.entry_y)}
@@ -28,10 +30,4 @@ def resolve_lab(my_lab: MyLaby, colour: list) -> list:
 
     path.append((my_lab.entry_x, my_lab.entry_y))
     path.reverse()
-    my_lab.output_maze(path)
-    for x, y in path:
-        my_lab.grid[y][x].resolved = True
-        clear_screen()
-        display(my_lab, colour)
-        time.sleep(0.05)
     return path

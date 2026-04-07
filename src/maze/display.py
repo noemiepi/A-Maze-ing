@@ -1,6 +1,6 @@
-from src.maze_class import MyLaby
-import os
+from maze.maze_class import MyLaby
 from typing import Optional
+import os
 
 
 def clear_screen() -> None:

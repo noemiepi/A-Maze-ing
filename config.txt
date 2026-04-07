@@ -1,7 +1,7 @@
-# valid entry: KEY=VALUE
+# comments
 WIDTH=15
 HEIGHT=15
 ENTRY=0,0
-EXIT=12,13
-OUTPUT_FILE=output_lab.txt
+EXIT=14,14
+OUTPUT_FILE=output.txt
 PERFECT=True

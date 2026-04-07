@@ -1,11 +1,12 @@
 import random
-from src.maze_class import MyLaby
-# from src.display import display, clear_screen
+from maze.maze_class import MyLaby
+# from maze.display import display, clear_screen
 # import time
 
 
 class DfsLab(MyLaby):
 
+    # algorithme de creation du labyrinthe
     def maze_creator(self) -> None:
         if self.seed:
             random.seed(self.seed)

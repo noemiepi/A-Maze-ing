@@ -11,7 +11,7 @@ MYPY_FLAGS=--warn-return-any --warn-unused-ignores --ignore-missing-imports \
 SRC_FILES=a_maze_ing.py src/
 CONFIG=config.txt
 
-.PHONY: all install run debug clean lint lint-strict
+.PHONY: all install run debug clean lint lint-strict build
 
 all: install run
 
@@ -31,9 +31,11 @@ debug:
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
+	find . -type d -name ".mypy_cache" -exec rm -rf {} +
+	find . -type d -name ".ruff_cache" -exec rm -rf {} +
 	rm -rf .mypy_cache
+	rm -rf .coverage
 	rm -rf .venv
-	rm -f poetry.lock
 	rm -f uv.lock
 	rm -f output_lab.txt
 
@@ -51,3 +53,5 @@ lint-strict:
 	$(MYPY) $(SRC_FILES) $(MYPY_FLAGS) --strict || status=$$?; \
 	exit $$status
 
+build:
+	python3 -m build
