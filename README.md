@@ -80,35 +80,55 @@ python3 a_maze_ing.py config.txt
 
 ### Code reusability
 
-	python3 -m venv my_env
+In order to build the package, you need to execute this command:
+```bash
+python3 -m build
 
-	source my_env/bin/activate
+or
 
-	pip install mazegen-1.0.0-py3-none-any.whl
+make build
+```
 
-	code config.txt
-		WIDTH=15
-		HEIGHT=15
-		ENTRY=0,0
-		EXIT=14,14
-		OUTPUT_FILE=output.txt
-		PERFECT=True
+To then install and use files inside the package, this series of commands will be executed.
+```bash
+python3 -m venv my_env
 
-	code main.py
-		from maze.config import config_method, MyBaseConfig
-		from maze.dfs import DfsLab
-		from maze.resolved_lab import resolve_lab
-		from maze.display import display, clear_screen
+source my_env/bin/activate
+
+pip install mazegen-1.0.0-py3-none-any.whl
+```
+
+You will need a `config.txt` file to have a working code. It is given below:
+```
+WIDTH=15
+HEIGHT=15
+ENTRY=0,0
+EXIT=14,14
+OUTPUT_FILE=output.txt
+PERFECT=True
+```
+
+Then create a `main.py` file and copy and paste this:
+```python
+from maze.config import config_method, MyBaseConfig
+from maze.dfs import DfsLab
+from maze.resolved_lab import resolve_lab
+from maze.display import display, clear_screen
 
 
-		if __name__ == "__main__":
-    		conf = config_method()
-			lab = DfsLab(conf[0])
-			lab.maze_creator()
-			path = resolve_lab(lab)
-			lab.output_maze(path)
+if __name__ == "__main__":
+	conf = config_method()
+	lab = DfsLab(conf[0])
+	lab.maze_creator()
+	path = resolve_lab(lab)
+	lab.output_maze(path)
+```
 
-	python3 main.py
+Finally, to generate a maze, use this command:
+```bash
+python3 main.py
+```
+
 ---
 
 ### Team and project management
@@ -133,7 +153,7 @@ python3 a_maze_ing.py config.txt
 
   3. **What worked well and what could be improved:**
 
-  The repartition of the different tasks was done flawlessly, no difficulty were met on that front. For frrenaux, he discovered the vast possibilities that comes with using git. He recognise a lack of knowledge on that front. For npillet, the usage of the git tool is not mastered and needs work to improve.
+  The repartition of the different tasks was done flawlessly, no difficulties were met on that front. For frrenaux, he discovered the vast possibilities that come with using git. He recognises a lack of knowledge on that front. For npillet, the usage of the git tool is not mastered and needs work to improve.
 
 ---
 
