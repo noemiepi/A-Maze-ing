@@ -79,13 +79,37 @@ python3 a_maze_ing.py config.txt
 ---
 
 ### Code reusability
-  (le package qu'il faut pouvoir créer + instruction pour le créer)
-  (PS: les instructions sont aussi dans le package (copier/coller de l'un dans l'autre))
-	pythone -m venv my_env
-	source mon_env/bin/activate
-	pip install mazegen-1.0.0-py3-none-any.whl
----	code main.py
 
+	python3 -m venv my_env
+
+	source my_env/bin/activate
+
+	pip install mazegen-1.0.0-py3-none-any.whl
+
+	code config.txt
+		WIDTH=15
+		HEIGHT=15
+		ENTRY=0,0
+		EXIT=14,14
+		OUTPUT_FILE=output.txt
+		PERFECT=True
+
+	code main.py
+		from maze.config import config_method, MyBaseConfig
+		from maze.dfs import DfsLab
+		from maze.resolved_lab import resolve_lab
+		from maze.display import display, clear_screen
+
+
+		if __name__ == "__main__":
+    		conf = config_method()
+			lab = DfsLab(conf[0])
+			lab.maze_creator()
+			path = resolve_lab(lab)
+			lab.output_maze(path)
+
+	python3 main.py
+---
 
 ### Team and project management
   1. **Roles of each team member:**

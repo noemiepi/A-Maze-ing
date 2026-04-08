@@ -1,7 +1,7 @@
 import random
 from maze.maze_class import MyLaby
-# from src.maze.display import display, clear_screen
-# import time
+from src.maze.display import display, clear_screen
+import time
 
 
 class HuntKill(MyLaby):
@@ -14,9 +14,9 @@ class HuntKill(MyLaby):
         self.grid[current_y][current_x].visited = True
         while True:
             self.grid[current_y][current_x].current = True
-            # clear_screen()
-            # display(self)
-            # time.sleep(0.1)
+            clear_screen()
+            display(self)
+            time.sleep(0.1)
             free_neigbhors = self.neighbor(current_x, current_y, "create")
             if free_neigbhors:
                 random.shuffle(free_neigbhors)

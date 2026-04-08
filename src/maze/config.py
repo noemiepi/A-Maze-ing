@@ -120,10 +120,13 @@ class MyBaseConfig(BaseModel):
         return self
 
 
-def config_method() -> tuple:
+def config_method(width: Optional[int] = None, height: Optional[int] = None,
+                  entry: Optional[list] = None, exit: Optional[list] = None,
+                  perfect: Optional[bool] = True, output_file: Optional[str]
+                  = None) -> tuple:
     try:
         with open("config.txt", "r") as c:
-            base_config = ["WIDTH", "HEIGHT", "ENTRY", "EXIT", "MAX",
+            base_config = ["WIDTH", "HEIGHT", "ENTRY", "EXIT",
                            "PERFECT", "OUTPUT_FILE"]
             config = {}
             error_conf = {}

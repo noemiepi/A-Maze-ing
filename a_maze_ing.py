@@ -24,6 +24,7 @@ if check_dependencies():
     path = None
 
     while True:
+        algo_str = "DFS" if algo == 0 else "Hunt&Kill"
         menu = UserMenu()
         clear_screen()
         if not menu.config:
@@ -42,8 +43,11 @@ if check_dependencies():
             if lab is None:
                 lab = menu.generate_maze(colour, algo)
                 path = resolve_lab(lab)
+            else:
+                path = resolve_lab(lab)
+                display(lab, colour)
+                print(f"\033[1;36m{algo_str}\033[0m")
             lab.output_maze(path)
-            display(lab, colour)
             menu.display_menu()
             try:
                 choice = int(input("Choice? (1-6): "))
@@ -52,11 +56,11 @@ if check_dependencies():
                     display(lab, colour)
                     print("\nInvalid choice! Please select a number between "
                           "1 and 6")
-                if choice == 1:
+                elif choice == 1:
                     lab = menu.re_generate(colour, algo)
-                    i *= 2
+                    # i *= 2
                 elif choice == 2:
-                    i = menu.show_hide(lab, colour, path)
+                    menu.show_hide(lab, colour, path)
                 elif choice == 3:
                     colour = menu.colour_change(lab, colour_list, c)
                     c += 1

@@ -1,7 +1,7 @@
 import random
 from maze.maze_class import MyLaby
-# from maze.display import display, clear_screen
-# import time
+from maze.display import display, clear_screen
+import time
 
 
 class DfsLab(MyLaby):
@@ -15,9 +15,9 @@ class DfsLab(MyLaby):
         while stack:
             current_x, current_y = stack[-1]
             self.grid[current_y][current_x].current = True
-            # clear_screen()
-            # display(self)
-            # time.sleep(0.1)
+            clear_screen()
+            display(self)
+            time.sleep(0.1)
             free_neighbors = self.neighbor(current_x, current_y, "create")
             if free_neighbors:
                 random.shuffle(free_neighbors)
