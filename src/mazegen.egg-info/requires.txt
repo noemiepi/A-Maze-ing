@@ -1,4 +1,0 @@
-pydantic>=2.12.5
-mypy>=1.19.1
-poetry>=2.3.2
-arcade<4.0.0,>=3.3.3
