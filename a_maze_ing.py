@@ -1,14 +1,14 @@
 #!/usr/bin/env python3.10
 
-from src.maze.check_dependencies import check_dependencies
+from maze.check_dependencies import check_dependencies
 import time
 
 if check_dependencies():
 
-    from src.maze.display import display, clear_screen
-    from src.game_mode import WindowRenderer
-    from src.user_interaction import UserMenu
-    from src.maze.resolved_lab import resolve_lab
+    from maze.display import display, clear_screen
+    from game_mode import WindowRenderer
+    from user_interaction import UserMenu
+    from maze.resolved_lab import resolve_lab
     import arcade
     print("It's ready for A-Maze-ing project")
     i = 0

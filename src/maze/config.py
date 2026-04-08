@@ -1,8 +1,8 @@
-from typing_extensions import Annotated
-from pydantic import BaseModel, model_validator, field_validator, Field,\
+from typing_extensions import Annotated, Self
+from pydantic import BaseModel, model_validator, field_validator, Field, \
                      ValidationError, PrivateAttr
 import re
-from typing import Optional
+from typing import Optional, Any
 
 
 # implementation de la config suivant config.txt
@@ -27,7 +27,7 @@ class MyBaseConfig(BaseModel):
         return value
 
     @model_validator(mode='after')
-    def limits_are_allowed(self):
+    def limits_are_allowed(self) -> Self:
         if self.WIDTH <= 2:
             widther = self.WIDTH
             self.WIDTH = 3
@@ -120,16 +120,13 @@ class MyBaseConfig(BaseModel):
         return self
 
 
-def config_method(width: Optional[int] = None, height: Optional[int] = None,
-                  entry: Optional[list] = None, exit: Optional[list] = None,
-                  perfect: Optional[bool] = True, output_file: Optional[str]
-                  = None) -> tuple:
+def config_method() -> tuple[Any, Any]:
     try:
         with open("config.txt", "r") as c:
             base_config = ["WIDTH", "HEIGHT", "ENTRY", "EXIT",
                            "PERFECT", "OUTPUT_FILE"]
-            config = {}
-            error_conf = {}
+            config: dict[str, Any] = {}
+            error_conf: dict[str, Any] = {}
             file = c.read()
             error = False
             for line in file.split("\n"):
@@ -155,7 +152,7 @@ def config_method(width: Optional[int] = None, height: Optional[int] = None,
             except KeyError as e:
                 print(f"ERROR: {e}")
     except FileNotFoundError:
-        return(None, None)
+        return (None, None)
     try:
         my_scope = MyBaseConfig(**config)
         if error_conf:

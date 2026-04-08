@@ -1,10 +1,10 @@
 from maze.config import MyBaseConfig
-from typing import Optional
+from typing import Optional, Any
 from abc import ABC, abstractmethod
 
 
 class Cellule():
-    def __init__(self):
+    def __init__(self) -> None:
         self.north = True
         self.south = True
         self.east = True
@@ -31,7 +31,8 @@ class MyLaby(ABC):
 # *****************************************************************************
 # *****************************************************************************
     # recherche des voisins disponibles
-    def neighbor(self, current_x: int, current_y: int, func: str) -> list:
+    def neighbor(self, current_x: int, current_y: int, func: str
+                 ) -> list[tuple[str, int, int]]:
         neighb = [
             ("north", current_x, current_y-1),
             ("south", current_x, current_y+1),
@@ -46,36 +47,36 @@ class MyLaby(ABC):
                    not self.grid[ny][nx].ft:
                     self.grid[ny][nx].current = False
                     if not self.grid[ny][nx].visited:
-                        neighbors.append([dir, nx, ny])
+                        neighbors.append((dir, nx, ny))
         # retourne les voisins visites
         elif func == "hunt":
             for dir, nx, ny in neighb:
                 if 0 <= nx < self.width and 0 <= ny < self.height:
                     self.grid[ny][nx].current = False
                     if self.grid[ny][nx].visited:
-                        neighbors.append([dir, nx, ny])
+                        neighbors.append((dir, nx, ny))
         # retourne des voisins
         elif func == "imperfect":
             for dir, nx, ny in neighb:
                 if 0 <= nx < self.width and 0 <= ny < self.height:
                     self.grid[ny][nx].current = False
-                    neighbors.append([dir, nx, ny])
+                    neighbors.append((dir, nx, ny))
         # retourne les voisins non-accessibles
         elif func == "resolve_lab":
             for dir, nx, ny in neighb:
                 if 0 <= nx < self.width and 0 <= ny < self.height:
                     if (dir == "north" and not
                             self.grid[current_y][current_x].north):
-                        neighbors.append([dir, nx, ny])
+                        neighbors.append((dir, nx, ny))
                     elif (dir == "south" and not
                             self.grid[current_y][current_x].south):
-                        neighbors.append([dir, nx, ny])
+                        neighbors.append((dir, nx, ny))
                     elif (dir == "east" and not
                             self.grid[current_y][current_x].east):
-                        neighbors.append([dir, nx, ny])
+                        neighbors.append((dir, nx, ny))
                     elif (dir == "west" and not
                             self.grid[current_y][current_x].west):
-                        neighbors.append([dir, nx, ny])
+                        neighbors.append((dir, nx, ny))
         return neighbors
 
 # *****************************************************************************
@@ -122,7 +123,8 @@ class MyLaby(ABC):
 # *****************************************************************************
 # *****************************************************************************
     # fichier de sortie du labyrinthe en hexadecimale
-    def output_maze(self, path: Optional[list] = None) -> None:
+    def output_maze(self, path: Optional[list[tuple[Any, Any]]] = None
+                    ) -> None:
         with open(self.output_file, "w") as f:
             for y in range(self.height):
                 for x in range(self.width):

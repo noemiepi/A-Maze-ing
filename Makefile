@@ -6,7 +6,8 @@ CHECK_UV=command -v uv
 INSTALL_UV = curl -LsSf https://astral.sh/uv/install.sh | sh
 
 MYPY_FLAGS=--warn-return-any --warn-unused-ignores --ignore-missing-imports \
---disallow-untyped-defs --check-untyped-defs
+--disallow-untyped-defs --check-untyped-defs \
+--explicit-package-bases \
 
 SRC_FILES=a_maze_ing.py src/
 CONFIG=config.txt
@@ -32,7 +33,6 @@ debug:
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	find . -type d -name ".mypy_cache" -exec rm -rf {} +
-	find . -type d -name ".ruff_cache" -exec rm -rf {} +
 	rm -rf .mypy_cache
 	rm -rf .coverage
 	rm -rf .venv

@@ -8,7 +8,7 @@ def clear_screen() -> None:
 
 
 # affichage
-def display(my_lab: MyLaby, colour: Optional[list] = None) -> None:
+def display(my_lab: MyLaby, colour: Optional[list[int]] = None) -> None:
     if colour is None:
         colour = [97, 96, 33, 31, 92]
     grid_to_display = my_lab.grid

@@ -3,7 +3,7 @@ import random
 import time
 import arcade
 from maze.maze_class import MyLaby
-from src.sprite import Character, Wall
+from sprite import Character, Wall
 
 
 WINDOW_WIDTH = 1920
@@ -27,10 +27,11 @@ class WindowRenderer(arcade.Window):
         self.total_time = 0.0
 
         self.maze = maze
-        self.player_list = arcade.SpriteList()
-        self.wall_list = arcade.SpriteList()
-        self.easter_egg = arcade.SpriteList()
-        self.exit = arcade.SpriteList()
+        self.player_list: arcade.SpriteList[arcade.Sprite] = \
+            arcade.SpriteList()
+        self.wall_list: arcade.SpriteList[arcade.Sprite] = arcade.SpriteList()
+        self.easter_egg: arcade.SpriteList[arcade.Sprite] = arcade.SpriteList()
+        self.exit: arcade.SpriteList[arcade.Sprite] = arcade.SpriteList()
 
         self.camera: arcade.camera.Camera2D = arcade.camera.Camera2D()
 
@@ -197,7 +198,7 @@ class WindowRenderer(arcade.Window):
                 arcade.load_texture(f"{PATH}character4.png"),
             ]
 
-            wolf = Character(f"{PATH}wolf.jpg", 0.8, None)
+            wolf = Character(f"{PATH}wolf.jpg", 0.8, [])
             wolf.center_x = WINDOW_WIDTH / 2
             wolf.center_y = WINDOW_HEIGHT / 2
             self.easter_egg.append(wolf)
