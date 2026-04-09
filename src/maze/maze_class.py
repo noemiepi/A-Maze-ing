@@ -64,11 +64,11 @@ class MyLaby(ABC):
                     cellule.current = False
                     if cellule.north:
                         value += 0b0001
-                    if cellule.south:
-                        value += 0b0010
-                    if cellule.west:
-                        value += 0b0100
                     if cellule.east:
+                        value += 0b0010
+                    if cellule.south:
+                        value += 0b0100
+                    if cellule.west:
                         value += 0b1000
                 if value in [0b1011, 0b0111, 0b1101, 0b1110]:
                     neighbors.append((dir, nx, ny))
@@ -143,11 +143,11 @@ class MyLaby(ABC):
                     value = 0
                     if cellule.north:
                         value += 0b0001
-                    if cellule.south:
-                        value += 0b0010
-                    if cellule.west:
-                        value += 0b0100
                     if cellule.east:
+                        value += 0b0010
+                    if cellule.south:
+                        value += 0b0100
+                    if cellule.west:
                         value += 0b1000
                     f.write(hex(value)[2::])
                 f.write("\n")
