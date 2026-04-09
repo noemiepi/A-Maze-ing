@@ -62,13 +62,13 @@ class MyLaby(ABC):
                 if 0 <= nx < self.width and 0 <= ny < self.height:
                     cellule = self.grid[ny][nx]
                     cellule.current = False
-                    if not cellule.north:
+                    if cellule.north:
                         value += 0b0001
-                    if not cellule.south:
+                    if cellule.south:
                         value += 0b0010
-                    if not cellule.west:
+                    if cellule.west:
                         value += 0b0100
-                    if not cellule.east:
+                    if cellule.east:
                         value += 0b1000
                 if value in [0b1011, 0b0111, 0b1101, 0b1110]:
                     neighbors.append((dir, nx, ny))
@@ -141,13 +141,13 @@ class MyLaby(ABC):
                 for x in range(self.width):
                     cellule = self.grid[y][x]
                     value = 0
-                    if not cellule.north:
+                    if cellule.north:
                         value += 0b0001
-                    if not cellule.south:
+                    if cellule.south:
                         value += 0b0010
-                    if not cellule.west:
+                    if cellule.west:
                         value += 0b0100
-                    if not cellule.east:
+                    if cellule.east:
                         value += 0b1000
                     f.write(hex(value)[2::])
                 f.write("\n")

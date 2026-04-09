@@ -58,7 +58,6 @@ if check_dependencies():
                           "1 and 6")
                 elif choice == 1:
                     lab = menu.re_generate(colour, algo)
-                    # i *= 2
                 elif choice == 2:
                     menu.show_hide(lab, colour, path)
                 elif choice == 3:
