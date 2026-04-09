@@ -58,8 +58,19 @@ class MyLaby(ABC):
         # retourne des voisins
         elif func == "imperfect":
             for dir, nx, ny in neighb:
+                value = 0
                 if 0 <= nx < self.width and 0 <= ny < self.height:
-                    self.grid[ny][nx].current = False
+                    cellule = self.grid[ny][nx]
+                    cellule.current = False
+                    if not cellule.north:
+                        value += 0b0001
+                    if not cellule.south:
+                        value += 0b0010
+                    if not cellule.west:
+                        value += 0b0100
+                    if not cellule.east:
+                        value += 0b1000
+                if value in [0b1011, 0b0111, 0b1101, 0b1110]:
                     neighbors.append((dir, nx, ny))
         # retourne les voisins non-accessibles
         elif func == "resolve_lab":
