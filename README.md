@@ -1,4 +1,22 @@
-*This project has been created as part of the 42 curriculum by frrenaux and npillet.*
+<div align="center">
+    <h1>A-Maze_ing</h1>
+    <h3>This is the way</h3>
+    <i>This project has been created as part of the 42 curriculum by npillet and frrenaux.</i>
+</div>
+
+## Table of Contents
+- [Description](#description)
+- [Instructions](#instructions)
+- [Complete structure and format of config.txt](#complete-structure-and-format-of-configtxt)
+- [Maze generation algorithm](#maze-generation-algorithm)
+- [Code reusability](#code-reusability)
+- [Team and project management](#team-and-project-management)
+  - [1. Roles of each team member](#1-roles-of-each-team-member)
+  - [2. Original planning and how it evolved](#2-original-planning-and-how-it-evolved)
+  - [3. What worked well and what could be improved](#3-what-worked-well-and-what-could-be-improved)
+- [Specific tools usage](#specific-tools-usage)
+- [Advanced features](#advanced-features)
+- [Resources](#resources)
 
 ## Description
 The goal of this project is to generate a maze. It will contain an entry and an exit between which there must be at least one valid path. In the file config.txt, the size of the maze as well as the coordinates for the entry and the exit and whether only one path or multiple can be found linking the entry and the exit.
@@ -39,8 +57,7 @@ python3 a_maze_ing.py config.txt
 
 ---
 
-## Explanation and justification
-### Complete structure and format of config.txt
+## Complete structure and format of config.txt
 | KEY | Description | Example |
 | :---: | --- | --- |
 | WIDTH | Define the maze width | WIDTH=20 |
@@ -50,9 +67,7 @@ python3 a_maze_ing.py config.txt
 | OUTPUT_FILE | Define the output file's name | OUTPUT_FILE=maze.txt |
 | PERFECT | Define if the maze has only one way out or more (True for yes, False for no) | PERFECT=True |
 
----
-
-### Maze generation algorithm
+## Maze generation algorithm
   1. **Explanation:**
       - *DFS Algorithm:*
 
@@ -76,10 +91,7 @@ python3 a_maze_ing.py config.txt
   3. **The reason(s) why we chose it:**
   The DFS algorithm was the first found and therefore applied. The Hunt-and-Kill algorithm on the other hand seemed fun to do.
 
----
-
-### Code reusability
-
+## Code reusability
 In order to build the package, you need to execute this command:
 ```bash
 python3 -m build
@@ -129,42 +141,35 @@ Finally, to generate a maze, use this command:
 python3 main.py
 ```
 
----
+## Team and project management
+### 1. Roles of each team member:
+  - **frrenaux:**
+    - Parsing
+    - DFS algorithm
+    - Hunt-and-Kill algorithm
+    - Maze output
 
-### Team and project management
-  1. **Roles of each team member:**
+  - **npillet:**
+    - Makefile
+    - User menu
+    - Play mode
+    - README.md
 
-     - **frrenaux:**
-       - Parsing
-       - DFS algorithm
-       - Hunt-and-Kill algorithm
-       - Maze output
-
-     - **npillet:**
-       - Makefile
-       - User menu
-       - Play mode
-       - README.md
-
-  2. **Original planning and how it evolved:**
+### 2. Original planning and how it evolved:
 
   DFS algorithm implemented in recursive but now in iterative because there is a limitation in the number of calls possible.
   Before the Hunt-and-Kill algorithm, the Blobby algorithm was considered because it looked fun to do. After a few days of trying to make it work, the latter was abandoned in favour of the first.
 
-  3. **What worked well and what could be improved:**
+### 3. What worked well and what could be improved:
 
   The repartition of the different tasks was done flawlessly, no difficulties were met on that front. For frrenaux, he discovered the vast possibilities that come with using git. He recognises a lack of knowledge on that front. For npillet, the usage of the git tool is not mastered and needs work to improve.
 
----
-
-### Specific tools usage
+## Specific tools usage
 The dependencies we used, other than the mandatory ones, are:
 - **Pydantic:** to check the config.txt file
 - **Arcade:** for the play mode
 
----
-
-### Advanced features
+## Advanced features
 Two algorithms were created for the maze generation, DFS (the main algorithm) and Hunt-and-Kill. The explanations are above this section. There is a feature in the user menu to change the generating algorithm.
 
 The play mode is also a feature in this menu. By selecting it, a new window opens where the user incarnates a slime who needs to escape the maze previously generated in the terminal.
@@ -173,26 +178,31 @@ In the far left corner, a timer is present and times the escape of the player.
 
 The entirety of this mode was created using the arcade library.
 
----
-
 ## Resources
-### Maze generation:
-#### Algorithms:
-- https://www.codecademy.com/article/depth-first-search-dfs-algorithm
-- https://weblog.jamisbuck.org/2011/1/24/maze-generation-hunt-and-kill-algorithm
+### Notions
+#### Maze generation
+##### Algorithms
+- [DFS](https://www.codecademy.com/article/depth-first-search-dfs-algorithm)
+- [Hunt and Kill](https://weblog.jamisbuck.org/2011/1/24/maze-generation-hunt-and-kill-algorithm)
 
-#### User interactions:
-- https://jobbinge.in/menu-driven-programs-in-python/
-- https://medium.com/@ajineer/introducing-the-special-menu-class-in-python-simplifying-user-choices-87f3bf58b495
+##### User interactions
+- [User Menu](https://jobbinge.in/menu-driven-programs-in-python/)
+- [Python User Menu](https://medium.com/@ajineer/introducing-the-special-menu-class-in-python-simplifying-user-choices-87f3bf58b495)
 
-#### Play mode:
-- https://api.arcade.academy/en/stable/index.html
-- https://api.arcade.academy/en/2.6.17/examples/maze_depth_first.html
-- https://arcade-pk.readthedocs.io/en/latest/
+##### Play mode
+- [Arcade](https://api.arcade.academy/en/stable/index.html)
+- [Maze Depth First](https://api.arcade.academy/en/2.6.17/examples/maze_depth_first.html)
+- [Arcade Documentation](https://arcade-pk.readthedocs.io/en/latest/)
 
-### Other:
-#### Makefile:
-- https://earthly.dev/blog/python-makefile/
+#### Other
+- [Python Makefile](https://earthly.dev/blog/python-makefile/)
 
-#### Code reusability:
-- https://packaging.python.org/en/latest/tutorials/packaging-projects/
+- [Packaging project](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
+
+<br>
+<hr>
+<br>
+
+<div align="center">
+    <img src="assets/footer.png" />
+</div>
